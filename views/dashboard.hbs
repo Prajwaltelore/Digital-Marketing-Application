@@ -1,0 +1,127 @@
+<div class="container-fluid bg-primary py-5 bg-header" style="margin-bottom: 90px;">
+  <div class="row py-5">
+    <div class="col-12 pt-lg-5 mt-lg-5 text-center">
+      <h1 class="display-4 text-white animated zoomIn">Dashboard</h1>
+      <a href="/" class="h5 text-white" style="padding-right: 15px;">Home</a>
+      <a href="dashboard" class="h5 text-white" style="padding-left: 15px;">Dashboard</a>
+    </div>
+  </div>
+</div>
+</div>
+<!-- Navbar End -->
+
+
+<!-- Full Screen Search Start -->
+<div class="modal fade" id="searchModal" tabindex="-1">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content" style="background: rgba(9, 30, 62, .7);">
+      <div class="modal-header border-0">
+        <button type="button" class="btn bg-white btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body d-flex align-items-center justify-content-center">
+        <div class="input-group" style="max-width: 600px;">
+          <input type="text" class="form-control bg-transparent border-primary p-3" placeholder="Type search keyword">
+          <button class="btn btn-primary px-4"><i class="bi bi-search"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Full Screen Search End -->
+
+<!-- Features Start -->
+<div class="container-fluid py-2 wow fadeInUp" data-wow-delay="0.1s">
+  <div class="container py-2">
+    <div class="row g-5">
+      <div class="col-12">
+        <div class="row g-5">
+          <div class="col-lg-4 wow zoomIn" data-wow-delay="0.2s">
+            <div class="card text-center" style="border: none;background-color:#86A7FC">
+              <div class="card-body">
+                <h5 class="card-title">&#8377;40000</h5>
+                <p class="card-text">Total Purchases</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 wow zoomIn" data-wow-delay="0.6s">
+            <div class="card text-center" style="border: none;background-color:#86A7FC">
+              <div class="card-body">
+                <h5 class="card-title">1M</h5>
+                <p class="card-text">CLients</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 wow zoomIn" data-wow-delay="0.6s">
+            <div class="card text-center" style="border: none;background-color:#86A7FC">
+              <div class="card-body">
+                <h5 class="card-title">$900k</h5>
+                <p class="card-text">Turnover</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid py-2 wow fadeInUp" data-wow-delay="0.1s">
+  <div class="container py-2">
+    <div class="row g-5">
+      <div class="col-12">
+        <div class="table-responsive wow zoomIn" data-wow-delay="0.2s">
+          <table class="table table-indigo table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Amount</th>
+                <th>OrderID</th>
+                <th>Package name</th>
+                <th>UserID</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>PaymentId</th>
+              </tr>
+            </thead>
+            <tbody id="payment">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function () {
+    let auth = JSON.parse(localStorage.getItem('auth'));
+    let user = auth.userData;
+    $.ajax({
+      url: "/subscription/" + user.id,
+      method: "get",
+      dataType: "json",
+      success: function (response) {
+        let arrData = '';
+        if (response.status) {
+          response.data.forEach(function (elment) {
+            arrData += '<tr>' +
+              '<td>' + elment.amount + '</td>' +
+              '<td>' + elment.order + '</td>' +
+              '<td>' + elment.package_name + '</td>' +
+              '<td>' + elment.user + '</td>' +
+              '<td>' + elment.start_date + '</td>' +
+              '<td>' + elment.end_date + '</td>' +
+              '<td>' + elment.paymentId + '</td>' +
+              '</tr>'
+          })
+          $("#payment").html(" ");
+          $("#payment").html(arrData);
+        }
+        else {
+          console.log('error');
+        }
+      },
+      error: function (error) {
+        console.log(error);
+      }
+    })
+  })
+</script>
